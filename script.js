@@ -3,48 +3,41 @@ const buttonStart = document.getElementById('start')
 const countDownDisplay = document.getElementById('time')
 
 
-const dateTomorrow = new Date (2023, 7, 24, 9, 30, 0 );
-// console.log("domani 9:30: " + dateTomorrow)
+const dateTomorrow = new Date (2023, 7, 24, 9, 30, 0 ); //prendo la data della scadenza
 
 
-let timeStop = false;
+let timeStop = false; // variabile di appoggi per lo start/stop
 
-buttonStart.addEventListener('click', function(){
+buttonStart.addEventListener('click', function(){ //se start dopo stop ricalcola momento
 
-    const dateRightNow = new Date ();
+    const dateRightNow = new Date (); // prendo la data al click del bottone
 
-    // console.log("ora: " + dateRightNow);
+    const tomorrow = dateTomorrow.getTime(); // prendo i millisecondi di domani (1970)
 
-    const tomorrow = dateTomorrow.getTime();
-    // console.log("ms domani: " + tomorrow);
+    const rightNow = dateRightNow.getTime(); // prendo i millisecondi dal 1970 fino al click
 
-    const rightNow = dateRightNow.getTime();
-    // console.log("ms ora: " + rightNow)
+    let timeLimit = tomorrow - rightNow; // rimane i millisecondi a domani
 
-
-    let timeLimit = tomorrow - rightNow;
-    // console.log(timeLimit)
-    // console.log(typeof timeLimit)
-
-    let secondsRemaining = Math.floor(timeLimit / 1000);
-    // console.log(secondsRemaining)
+    let secondsRemaining = Math.floor(timeLimit / 1000); // li trasformo in secondi
 
     
-
+    timeStop = false; 
     
-    timeStop = false;
-    
-    const timeRemaining = setInterval(function () {
+    const timeRemaining = setInterval(function () { 
 
-        secondsRemaining--
+        secondsRemaining --;
 
-        console.log("con stop: " + secondsRemaining)
+        console.log(secondsRemaining)
     
         if(timeStop){
-            clearInterval(timeRemaining)
+            clearInterval(timeRemaining) // termino se cliccato stop
         }
-        
-    }, 1000);
+
+        if(secondsRemaining <= 0) {
+            clearInterval(timeRemaining) // termino se arrivati a 0
+            alert ("tempo scaduto!")
+        }
+    }, 1000); 
     
 })
 
